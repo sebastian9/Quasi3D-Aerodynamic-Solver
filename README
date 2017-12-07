@@ -1,0 +1,18 @@
+LEEME
+
+Correr con ejecutables de avl y xfoil en la carpeta de trabajo
+Utilizar archivos .dat con al menos 200 puntos que puedan ser leídos correctamente por XFOIL y AVL
+Configuración AVL Nchord 13 Nspan 24
+Sólo acepta alas con borde de ataque recto, aunque acepta n divisiones
+Sólo acepta la interpolación lineal de perfil de raíz y de punta
+Correr Polar.m para generar una polar
+Llamar SolverA para resolver un ángulo de ataque
+Se recomienda correr el programa con los archivos .run abiertos en un editor de texto para ver el progreso
+Tiempo promedio por ángulo 25 segundos en un sólo núcleo
+
+Cambios desde V2:
+
+For paralelo en el script Polar.m y cambios en la nomenclatura de los archivos
+temporales para evitar interferencia entre workers.
+InterpolateAirfoils.m ahora permite alas con dos perfiles, uno en raíz y otro en punta
+CDwave simple programado
