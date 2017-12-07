@@ -1,12 +1,12 @@
-function [a,Cd,Cdp,Cdf] = runXFOIL(Cl,Re,M,airfoil)
+function [a,Cd,Cdp,Cdf, result] = runXFOIL(Cl,Re,M,airfoil)
     fid = fopen([airfoil,num2str(Cl*10000),'.run'], 'w');
     fprintf(fid, 'PLOP\ng\n\n');
     fprintf(fid, 'LOAD %s\n', [airfoil,'.dat']);
     fprintf(fid, 'OPER\n');
     fprintf(fid, 'Visc %f\n',Re);
     fprintf(fid, 'Mach %f\n',M);
+    fprintf(fid, 'iter \n100\n');
     fprintf(fid, 'Cl %f\n',Cl);
-    fprintf(fid, '!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n');
     fprintf(fid, '\nquit\n');
     [status,result] = dos(['xfoil.exe < ',airfoil,num2str(Cl*10000),'.run']);
     fclose(fid);
@@ -20,7 +20,7 @@ function [a,Cd,Cdp,Cdf] = runXFOIL(Cl,Re,M,airfoil)
     Cd = findValue(file,'CD =',[1,length(file)]);
     Cdp = findValue(file,'CDp =',[1,length(file)]);
     Cdf = findValue(file,'CDf =',[1,length(file)]);
-    if regexpi(result,'VISCAL:  Convergence failed')
+    if regexpi(result,'NAN')
         a = -100;
         Cd = -100;
         Cdp = -100;

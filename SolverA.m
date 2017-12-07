@@ -11,7 +11,6 @@ function [CL,CD,CDprof,CDi] = SolverA(A,avlfilename,af1,af2,V,M,rho,dynamic_visc
         c = wingData(1).strip{1,i*(Nb/Sections)}.Chord;
         Cdsprof(i) = stage2iter(Cl,M,V,rho,dynamic_viscocity,c,A,lambda,epsilon,airfoil)
     end
-    Cdsprof
     
     for i=1:length(Cdsprof) % Resolver Convergencia
         airfoil = interpolateAirfoils(Sections-1,i-1,af1,af2);
@@ -35,7 +34,6 @@ function [CL,CD,CDprof,CDi] = SolverA(A,avlfilename,af1,af2,V,M,rho,dynamic_visc
             end
         end
     end
-    Cdsprof
     
     for i=1:length(Cdsprof) % "Resolver" Convergencia
         if Cdsprof(i) < 0
@@ -53,10 +51,8 @@ function [CL,CD,CDprof,CDi] = SolverA(A,avlfilename,af1,af2,V,M,rho,dynamic_visc
     Cdsprof
     
     cs = zeros(1,Sections);
-    for i=1:Sections
-        cs(1,i) = wingData(1).strip{1,i*(Nb/Sections)}.Chord;
-    end
-    CDprof = trapz((1:8)*Nb/Sections,cs.*Cdsprof)/S; % revisar
+    for i=1:Sections, cs(1,i) = wingData(1).strip{1,i*(Nb/Sections)}.Chord; end
+    CDprof = 2*trapz((1:8)*Nb/Sections,cs.*Cdsprof)/S; % revisar
     
     CD = CDi + CDprof;
 end

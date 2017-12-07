@@ -13,24 +13,26 @@ function [ Cdprof ] = stage2iter(Cl,M,V,rho,dynamic_viscocity,c,A,lambda,epsilon
     i=0;
     j=0;
     
-    while abs(ai - ai2)/ai > 0.01 && i<20 && j<3
+    while abs(ai - ai2)/ai > 0.01 && i<100 && j<2
         ai2 = ai;
         ai = ai*pi/180;
         
         Meff = Mp / cos(ai);
         Veff = Vp / cos(ai);
-        Reeff = Re*(Veff/V)*(cp/c)
+        Reeff = Re *(Veff/V)*(cp/c); % En realidad bastaría con calcular Re sólo para cp y corregir por Veff
         Cleff = (Clp * cos(ai)^2 + Cdeff * sin(ai))/cos(ai);
         
         [aeff,Cdeff,Cdpeff,Cdfeff] = runXFOIL(Cleff,Reeff,Meff,airfoil);
         if aeff == -100 && Cdeff == -100
-            ai = (ai+.1)*180/pi;
+            ai = (ai+1)*180/pi;
             Cdeff = 0;
-            j = j+1
+            j = j+5
         else
             ai = -aeff + (A + epsilon)* cos(lambda);
         end
-        i = i +1;
+        i = i + 1;
     end
-    Cdprof = ( Cdfeff + Cdpeff * cos(lambda)^3 ) / cos(ai*pi/180)
+    
+    Cdprof = ( Cdfeff + Cdpeff * cos(lambda)^3 ) / cos(ai*pi/180);
+    if abs(ai - ai2)/ai > 0.01, Cdprof = -100; end
  end
