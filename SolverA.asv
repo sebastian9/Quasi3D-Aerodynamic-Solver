@@ -52,7 +52,7 @@ function [CL,CD,CDprof,CDi] = SolverA(A,avlfilename,af1,af2,V,M,rho,dynamic_visc
     
     cs = zeros(1,Sections);
     for i=1:Sections, cs(1,i) = wingData(1).strip{1,i*(Nb/Sections)}.Chord; end
-    CDprof = 2*trapz(sqrt(AR*S).*(1:Sections)/Sections,cs.*Cdsprof)/S; % revisar
+    CDprof = 2*trapz(sqrt(AR*S)*(1:8)/8,cs.*Cdsprof)/S; % revisar
     
     CD = CDi + CDprof;
 end
