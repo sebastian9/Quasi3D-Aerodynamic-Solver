@@ -6,7 +6,7 @@ M = 0;
 rho = 1.2250;
 dynamic_viscocity = 1.5E-05;
 AR = 12;
-epsilon = 0; % En grados
+epsilon = 0; % En grados !! Falta desarrollar
 lambda = 0; % En grados
 A = -2:.5:14; % En grados
 
