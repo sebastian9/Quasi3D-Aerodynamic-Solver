@@ -1,4 +1,5 @@
 
+*.csv
 *.dat
 *.avl
 *.run
@@ -10,3 +11,4 @@
 *.mat
 *.pdf
 *.asv
+*.txt

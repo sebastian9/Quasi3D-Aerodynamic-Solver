@@ -1,4 +1,0 @@
-runAVLa.m - Listo
-runXFOIL.m - Listo
-stage2iter.m - Listo
-stage3 - Listo
