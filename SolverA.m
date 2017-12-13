@@ -1,4 +1,4 @@
-function [CL,CD,CDprof,CDi] = SolverA(A,avlfilename,af1,af2,V,M,rho,dynamic_viscocity,AR,epsilon,lambda) % Ángulos en grados
+function [CL,CD,CDprof,CDi,CDw, CDbody] = SolverA(A,avlfilename,af1,af2,V,M,rho,dynamic_viscocity,AR,epsilon,lambda) % Ángulos en grados
     Nb = 24;
     Sections = 8;
     
@@ -52,7 +52,20 @@ function [CL,CD,CDprof,CDi] = SolverA(A,avlfilename,af1,af2,V,M,rho,dynamic_visc
     
     cs = zeros(1,Sections);
     for i=1:Sections, cs(1,i) = wingData(1).strip{1,i*(Nb/Sections)}.Chord; end
-    CDprof = 2*trapz(sqrt(AR*S).*(1:Sections)/Sections,cs.*Cdsprof)/S; % revisar
+    CDprof = 2*trapz(sqrt(AR*S).*(1:Sections)/Sections,cs.*Cdsprof)/S;
     
-    CD = CDi + CDprof;
+    % Extra Drag Homework
+    
+    t = .1396; % espesor del perfil
+    ka = 0.87; % factor de johrn
+    CDw = WaveDrag(M,t,CL,lambda*pi/180,ka);
+    l = 24; %m
+    d = 3; %m
+    Swet = l*d*pi;
+    FF = 1+1.5/(l/d)^1.5+7/(l/d)^3; % factor forma fuselaje
+    ReBody = rho*V*l/dynamic_viscocity;
+    CF = 0.455*(log10(ReBody))^-2.58; % Coeficiente de fricción de placa plana en flujo turbulento
+    CDbody = CF*FF*Swet/S;
+    
+    CD = CDi + CDprof + CDw + CDbody;
 end
